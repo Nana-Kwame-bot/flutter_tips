@@ -4,5 +4,4 @@
 library tips_and_tricks_api;
 
 export 'src/tips_and_tricks_api_base.dart';
-
-// TODO: Export any libraries intended for clients of this package.
+export 'src/exceptions.dart';

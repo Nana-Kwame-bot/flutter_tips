@@ -1,0 +1,24 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        enabled: true
+        generate_for:
+          include:
+            - lib/**.model.dart
+            - lib/**_bloc.dart
+            - lib/**_cubit.dart
+            - packages/**.model.dart
+            - packages/**_bloc.dart
+            - packages/**_cubit.dart
+
+      freezed|freezed:
+        enabled: true
+        generate_for:
+          include:
+            - lib/**.model.dart
+            - lib/**_bloc.dart
+            - lib/**_cubit.dart
+            - packages/**.model.dart
+            - packages/**_bloc.dart
+            - packages/**_cubit.dart
