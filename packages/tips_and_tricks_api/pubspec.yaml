@@ -7,6 +7,7 @@ environment:
 
 dependencies:
   dio: ^4.0.6
+  dio_smart_retry: ^1.2.0
   path_provider: ^2.0.11
   logger: ^1.1.0
 

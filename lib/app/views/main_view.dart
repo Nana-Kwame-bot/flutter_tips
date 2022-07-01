@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_tips/home/view/home_page.dart';
+import 'package:flutter_tips/tips/tips_bloc.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class MainView extends StatefulWidget {
@@ -31,7 +32,7 @@ class _MainViewState extends State<MainView> {
                     'args3': true,
                   },
                 ));
-                debugPrint('$window');
+                logger.d('$window');
                 window
                   ..setFrame(const Offset(0, 0) & const Size(350, 350))
                   ..center()

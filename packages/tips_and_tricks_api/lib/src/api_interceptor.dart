@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-class LoggerInterceptor extends Interceptor {
-  Logger logger = Logger(
-    // Customize the printer
-    printer: PrettyPrinter(
-      methodCount: 0,
-      printTime: false,
-    ),
-  );
+Logger logger = Logger(
+  // Customize the printer
+  printer: PrettyPrinter(
+    methodCount: 0,
+    printTime: false,
+  ),
+);
 
+class LoggerInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     final options = err.requestOptions;

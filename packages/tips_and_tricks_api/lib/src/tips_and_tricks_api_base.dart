@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:tips_and_tricks_api/src/api_interceptor.dart';
 import 'package:tips_and_tricks_api/src/exceptions.dart';
 // https://raw.githubusercontent.com/vandadnp/flutter-tips-and-tricks/main/README.md
@@ -12,7 +13,21 @@ class TipsAndTricksApiClient {
   final Dio _dio;
 
   void addInterceptor() {
-    _dio.interceptors.add(LoggerInterceptor());
+    _dio.interceptors
+      ..add(LoggerInterceptor())
+      ..add(RetryInterceptor(
+        dio: _dio,
+        logPrint: (String log) {
+          logger.w(log);
+        }, // specify log function (optional)
+        retries: 3, // retry count (optional)
+        retryDelays: const [
+          // set delays between retries (optional)
+          Duration(seconds: 1), // wait 1 sec before first retry
+          Duration(seconds: 2), // wait 2 sec before second retry
+          Duration(seconds: 3), // wait 3 sec before third retry
+        ],
+      ));
   }
 
   Future<Response<String>> getData() async {
