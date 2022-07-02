@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tips/tips/tips_bloc.dart';
@@ -16,15 +15,7 @@ class BootStrap extends StatelessWidget {
       providers: [
         RepositoryProvider(
           create: (context) {
-            return TipsAndTricksApiClient(
-              dio: Dio(
-                BaseOptions(
-                  baseUrl: 'https://bit.ly',
-                  connectTimeout: 5000,
-                  receiveTimeout: 3000,
-                ),
-              ),
-            )..addInterceptor();
+            return TipsAndTricksApiClient()..addInterceptor();
           },
         ),
         RepositoryProvider(

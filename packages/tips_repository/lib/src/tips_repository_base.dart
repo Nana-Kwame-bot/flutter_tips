@@ -9,8 +9,9 @@ class TipsRepository {
 
   final TipsAndTricksApiClient _tipsAndTricksApiClient;
 
-  Future<Response<String>> Function() get responseData =>
-      _tipsAndTricksApiClient.getData;
+  Future<Response<String>> Function() get responseData {
+    return _tipsAndTricksApiClient.getData;
+  }
 
   List<TipUrl> getTips({required String data}) {
     final markdownUrls =

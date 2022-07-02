@@ -16,7 +16,6 @@ final Logger logger = Logger(
   printer: PrettyPrinter(
     methodCount: 0,
     printTime: false,
-    lineLength: 10,
   ),
 );
 

@@ -8,7 +8,15 @@ const _rawBlobRoot =
     'https://raw.githubusercontent.com/vandadnp/flutter-tips-and-tricks/main/';
 
 class TipsAndTricksApiClient {
-  const TipsAndTricksApiClient({required Dio dio}) : _dio = dio;
+  TipsAndTricksApiClient({Dio? dio})
+      : _dio = dio ??
+            Dio(
+              BaseOptions(
+                baseUrl: 'https://bit.ly',
+                connectTimeout: 5000,
+                receiveTimeout: 3000,
+              ),
+            );
 
   final Dio _dio;
 
