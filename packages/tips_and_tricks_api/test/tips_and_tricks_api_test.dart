@@ -9,14 +9,16 @@ class MockResponse extends Mock implements Response {}
 
 class MockError extends Mock implements DioError {}
 
+class FakeUri extends Fake implements Uri {}
+
 void main() {
-  group("TipsandTricksApi", () {
+  group("TipsAndTricksApi", () {
     late Dio dio;
     late TipsAndTricksApiClient tipsAndTricksApiClient;
 
-    // setUpAll(() {
-    //   registerFallbackValue(FakeUri);
-    // });
+    setUpAll(() {
+      registerFallbackValue(FakeUri);
+    });
 
     setUp(() {
       dio = MockDio();
@@ -47,6 +49,11 @@ void main() {
             return e.errorMessage;
           }, "error message", isNotNull)),
         );
+      });
+
+      test("has intercepters added", () {
+        when(() => tipsAndTricksApiClient.addInterceptors());
+        expect(dio.interceptors, Interceptors().isNotEmpty);
       });
     });
   });

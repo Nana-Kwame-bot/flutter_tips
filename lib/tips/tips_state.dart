@@ -6,6 +6,7 @@ class TipsState with _$TipsState {
   const factory TipsState.loadInProgress() = _LoadInProgress;
   const factory TipsState.loadSuccess({
     required List<TipUrl> tips,
+    required int currentItemCount,
   }) = _LoadSuccess;
   const factory TipsState.loadFailure([
     @Default("Something went wrong") String? errorMessage,

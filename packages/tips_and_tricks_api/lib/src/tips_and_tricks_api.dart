@@ -20,7 +20,7 @@ class TipsAndTricksApiClient {
 
   final Dio _dio;
 
-  void addInterceptor() {
+  void addInterceptors() {
     _dio.interceptors
       ..add(LoggerInterceptor())
       ..add(RetryInterceptor(

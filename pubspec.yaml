@@ -30,6 +30,10 @@ dependencies:
     path: packages/tips_repository      
   tips_and_tricks_api:
     path: packages/tips_and_tricks_api        
+  cached_network_image: ^3.2.1
+  flutter_platform_widgets: ^2.0.0
+  flutter_spinkit: ^5.1.0
+  tuple: ^2.0.0
 
 dev_dependencies:
   flutter_test:

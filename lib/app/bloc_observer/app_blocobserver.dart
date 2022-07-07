@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_tips/tips/tips_bloc.dart';
+import 'package:flutter_tips/bootstrap.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override

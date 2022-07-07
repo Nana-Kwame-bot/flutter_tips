@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_tips/bootstrap.dart';
 import 'package:flutter_tips/home/view/home_page.dart';
-import 'package:flutter_tips/tips/tips_bloc.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class MainView extends StatefulWidget {
@@ -25,13 +25,15 @@ class _MainViewState extends State<MainView> {
             PlatformMenuItem(
               label: 'About',
               onSelected: () async {
-                final window = await DesktopMultiWindow.createWindow(jsonEncode(
-                  {
-                    'args1': 'About Flutter Tips',
-                    'args2': 500,
-                    'args3': true,
-                  },
-                ));
+                final window = await DesktopMultiWindow.createWindow(
+                  jsonEncode(
+                    {
+                      'args1': 'About Flutter Tips',
+                      'args2': 500,
+                      'args3': true,
+                    },
+                  ),
+                );
                 logger.d('$window');
                 window
                   ..setFrame(const Offset(0, 0) & const Size(350, 350))
@@ -49,18 +51,22 @@ class _MainViewState extends State<MainView> {
       body: MacosWindow(
         sidebar: Sidebar(
           minWidth: 200,
-          builder: (context, scrollController) => SidebarItems(
-            currentIndex: _pageIndex,
-            onChanged: (index) {
-              setState(() => _pageIndex = index);
-            },
-            items: const [
-              SidebarItem(
-                leading: MacosIcon(CupertinoIcons.home),
-                label: Text('Home'),
-              ),
-            ],
-          ),
+          builder: (context, scrollController) {
+            return SidebarItems(
+              currentIndex: _pageIndex,
+              onChanged: (index) {
+                setState(() {
+                  _pageIndex = index;
+                });
+              },
+              items: const [
+                SidebarItem(
+                  leading: MacosIcon(CupertinoIcons.home),
+                  label: Text('Home'),
+                ),
+              ],
+            );
+          },
         ),
         child: IndexedStack(
           index: _pageIndex,
