@@ -20,6 +20,7 @@ class AboutWindow extends StatelessWidget {
       darkTheme: MacosThemeData.dark(),
       themeMode: ThemeMode.system,
       home: MacosWindow(
+        backgroundColor: Colors.transparent,
         child: MacosScaffold(
           children: [
             ContentArea(

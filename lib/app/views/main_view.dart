@@ -34,7 +34,7 @@ class _MainViewState extends State<MainView> {
                     },
                   ),
                 );
-                logger.d('$window');
+                logger.d('${window.runtimeType}');
                 window
                   ..setFrame(const Offset(0, 0) & const Size(350, 350))
                   ..center()

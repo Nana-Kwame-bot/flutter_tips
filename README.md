@@ -19,3 +19,7 @@ Since this project uses [freezed](https://pub.dev/packages/freezed) for code gen
 flutter pub run build_runner build
 ```
 
+# Showcase
+
+![](https://github.com/Nana-Kwame-bot/flutter_tips/blob/master/assets/gifs/tips.gif)
+
