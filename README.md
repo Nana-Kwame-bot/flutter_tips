@@ -16,8 +16,6 @@ A macOS app build with [macos_ui](https://macosui.dev/). Based on Vandad Nahavan
 Since this project uses [freezed](https://pub.dev/packages/freezed) for code generation, be sure to run the generator with the following command before attempting to build/run the application:
 
 ```
-
 flutter pub run build_runner build
-
 ```
 
