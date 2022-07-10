@@ -1,6 +1,6 @@
 # Flutter Tips
 
-A macOS app build with [macos_ui](https://macosui.dev/). Based on Vandad Nahavandipoor's flutter-tips-and-tricks collection.
+A macOS app built with [macos_ui](https://macosui.dev/). Based on Vandad Nahavandipoor's flutter-tips-and-tricks collection.
 
 - [A Collection of Flutter and Dart Tips and Tricks](https://github.com/vandadnp/flutter-tips-and-tricks)
 
