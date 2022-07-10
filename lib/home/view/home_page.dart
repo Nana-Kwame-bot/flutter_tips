@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_tips/home/view/details.dart';
 import 'package:flutter_tips/home/widgets/load_sccuess.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:flutter_tips/tips/state/tips_state.dart';
@@ -48,10 +49,10 @@ class HomePage extends StatelessWidget {
                           child: PushButton(
                             buttonSize: ButtonSize.large,
                             onPressed: () {
-                              // Navigator.of(context).push(
-                              //   Details.route(),
-                              // );
-                              ref.read(tipsNotifierProvider.notifier).getData();
+                              Navigator.of(context).push(
+                                Details.route(),
+                              );
+                              // ref.read(tipsNotifierProvider.notifier).getData();
                             },
                             child: const Text('Get data'),
                           ),
