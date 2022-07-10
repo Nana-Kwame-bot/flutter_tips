@@ -6,6 +6,7 @@ targets:
         generate_for:
           include:
             - lib/**.model.dart
+            - lib/**_state.dart
             - lib/**_bloc.dart
             - lib/**_cubit.dart
             - packages/**.model.dart
@@ -17,6 +18,7 @@ targets:
         generate_for:
           include:
             - lib/**.model.dart
+            - lib/**_state.dart
             - lib/**_bloc.dart
             - lib/**_cubit.dart
             - packages/**.model.dart

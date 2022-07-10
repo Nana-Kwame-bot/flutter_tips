@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_tips/tips/tips_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class LoadMore extends StatelessWidget {
@@ -15,19 +15,21 @@ class LoadMore extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       sliver: SliverToBoxAdapter(
         child: Center(
-          child: PushButton(
-            padding: const EdgeInsets.all(12.0),
-            buttonSize: ButtonSize.large,
-            child: const Text("Load more"),
-            onPressed: () async {
-              context.read<TipsBloc>().add(
-                    const TipsEvent.loadMoreRequested(),
-                  );
-              await Future.delayed(const Duration(milliseconds: 50), () {
-                SchedulerBinding.instance.addPostFrameCallback((_) {
-                  onPressed.call();
-                });
-              });
+          child: Consumer(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              return PushButton(
+                padding: const EdgeInsets.all(12.0),
+                buttonSize: ButtonSize.large,
+                child: const Text("Load more"),
+                onPressed: () async {
+                  ref.read(tipsNotifierProvider.notifier).loadMore();
+                  await Future.delayed(const Duration(milliseconds: 50), () {
+                    SchedulerBinding.instance.addPostFrameCallback((_) {
+                      onPressed.call();
+                    });
+                  });
+                },
+              );
             },
           ),
         ),

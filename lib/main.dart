@@ -3,11 +3,17 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_tips/app/bloc_observer/app_blocobserver.dart';
 import 'package:flutter_tips/app/views/about_window.dart';
 import 'package:flutter_tips/app/views/app.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:logger/logger.dart';
+
+final Logger logger = Logger(
+  // Customize the printer
+  printer: PrettyPrinter(
+    methodCount: 0,
+    printTime: false,
+  ),
+);
 
 void main(List<String> args) async {
   if (args.firstOrNull == 'multi_window') {
@@ -22,16 +28,6 @@ void main(List<String> args) async {
       ),
     );
   } else {
-    HydratedBlocOverrides.runZoned(
-      () => runApp(const App()),
-      createStorage: () async {
-        WidgetsFlutterBinding.ensureInitialized();
-
-        return HydratedStorage.build(
-          storageDirectory: await getApplicationDocumentsDirectory(),
-        );
-      },
-      blocObserver: AppBlocObserver(),
-    );
+    runApp(const App());
   }
 }

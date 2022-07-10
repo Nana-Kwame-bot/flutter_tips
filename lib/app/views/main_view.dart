@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_tips/bootstrap.dart';
 import 'package:flutter_tips/home/view/home_page.dart';
+import 'package:flutter_tips/main.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class MainView extends StatefulWidget {

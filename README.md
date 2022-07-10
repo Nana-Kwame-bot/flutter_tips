@@ -1,8 +1,15 @@
-# flutter_tips
+# Flutter Tips
 
 A starter Flutter app for macOS with `macos_ui`. Based on Vandad Nahavandipoor's flutter-tips-and-tricks collection.
 
 - [A Collection of Flutter and Dart Tips and Tricks](https://github.com/vandadnp/flutter-tips-and-tricks)
+
+# So far I've learnt a few things like:
+
+- [RIverpod: as Statemanagement]
+- [Slivers: for fancy scrolling animations]
+- [Dio: for htttp networking]
+- [The MacOS Ecosystem]
 
 ## Getting Started
 

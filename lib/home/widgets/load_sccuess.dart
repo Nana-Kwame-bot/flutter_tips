@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/home/widgets/load_more.dart';
-import 'package:flutter_tips/tips/tips_bloc.dart';
+import 'package:flutter_tips/tips/providers/providers.dart';
 
 class LoadSuccess extends StatefulWidget {
   const LoadSuccess({super.key});
@@ -25,9 +25,10 @@ class _LoadSuccessState extends State<LoadSuccess> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return BlocBuilder<TipsBloc, TipsState>(
-          builder: (context, state) {
-            return state.maybeWhen(
+        return Consumer(
+          builder: (BuildContext context, WidgetRef ref, Widget? child) {
+            final tipsState = ref.watch(tipsNotifierProvider);
+            return tipsState.maybeWhen(
               loadSuccess: (tips, currentItemCount) {
                 return CustomScrollView(
                   controller: _scrollController,
@@ -88,7 +89,7 @@ class _LoadSuccessState extends State<LoadSuccess> {
                       onPressed: () {
                         if (_scrollController.hasClients) {
                           _scrollController.animateTo(
-                            _scrollController.position.maxScrollExtent,
+                            _scrollController.position.maxScrollExtent - 80,
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.fastOutSlowIn,
                           );

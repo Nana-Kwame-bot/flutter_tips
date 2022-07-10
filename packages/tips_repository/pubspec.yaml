@@ -12,12 +12,8 @@ dependencies:
   dio: ^4.0.6
   tips_and_tricks_api:
     path: ../tips_and_tricks_api
-  freezed_annotation: ^2.0.3
-  json_annotation: ^4.5.0    
+  equatable: ^2.0.3
 
 dev_dependencies:
   lints: ^2.0.0
   test: ^1.16.0
-  freezed: ^2.0.3+1  
-  json_serializable: ^6.2.0
-  build_runner: ^2.1.10  

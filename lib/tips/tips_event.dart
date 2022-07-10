@@ -1,7 +1,0 @@
-part of 'tips_bloc.dart';
-
-@freezed
-class TipsEvent with _$TipsEvent {
-  const factory TipsEvent.dataRequested() = _DataRequested;
-  const factory TipsEvent.loadMoreRequested() = _LoadMoreRequested;
-}

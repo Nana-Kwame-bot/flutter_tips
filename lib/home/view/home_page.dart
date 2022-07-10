@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_tips/home/widgets/load_sccuess.dart';
-import 'package:flutter_tips/tips/tips_bloc.dart';
+import 'package:flutter_tips/tips/providers/providers.dart';
+import 'package:flutter_tips/tips/state/tips_state.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class HomePage extends StatelessWidget {
@@ -31,60 +32,28 @@ class HomePage extends StatelessWidget {
           children: [
             ContentArea(
               builder: (context, scrollController) {
-                return BlocConsumer<TipsBloc, TipsState>(
-                  listenWhen: (previous, current) {
-                    return previous.runtimeType != current.runtimeType;
-                  },
-                  listener: (context, state) {
-                    state.whenOrNull<void>(
-                      loadFailure: (errorMessage) {
-                        showMacosAlertDialog(
-                          context: context,
-                          builder: (context) {
-                            return MacosAlertDialog(
-                              appIcon: const FlutterLogo(
-                                size: 56,
-                              ),
-                              title: Text(
-                                'Failed to load data',
-                                style:
-                                    MacosTheme.of(context).typography.headline,
-                              ),
-                              message: Text(
-                                errorMessage ?? "Something went wrong",
-                                textAlign: TextAlign.center,
-                                style:
-                                    MacosTheme.of(context).typography.headline,
-                              ),
-                              primaryButton: PushButton(
-                                buttonSize: ButtonSize.large,
-                                child: const Text('OK'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
-                  buildWhen: (previous, current) {
-                    return previous.runtimeType != current.runtimeType;
-                  },
-                  builder: (context, state) {
-                    return state.when(
+                return Consumer(
+                  builder: (
+                    BuildContext context,
+                    WidgetRef ref,
+                    Widget? child,
+                  ) {
+                    final tipsState = ref.watch(tipsNotifierProvider);
+
+                    _listen(context: context, ref: ref);
+
+                    return tipsState.when(
                       initial: () {
                         return Center(
                           child: PushButton(
                             buttonSize: ButtonSize.large,
-                            onPressed: () {
+                            onPressed: () async {
                               // Navigator.of(context).push(
                               //   Details.route(),
                               // );
-                              context.read<TipsBloc>().add(
-                                    const TipsEvent.dataRequested(),
-                                  );
+                              await ref
+                                  .read(tipsNotifierProvider.notifier)
+                                  .getData();
                             },
                             child: const Text('Get data'),
                           ),
@@ -102,10 +71,10 @@ class HomePage extends StatelessWidget {
                         return Center(
                           child: PushButton(
                             buttonSize: ButtonSize.large,
-                            onPressed: () {
-                              context.read<TipsBloc>().add(
-                                    const TipsEvent.dataRequested(),
-                                  );
+                            onPressed: () async {
+                              await ref
+                                  .read(tipsNotifierProvider.notifier)
+                                  .getData();
                             },
                             child: const Text('Reload'),
                           ),
@@ -120,5 +89,40 @@ class HomePage extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _listen({required WidgetRef ref, required BuildContext context}) {
+    ref.listen<TipsState>(tipsNotifierProvider, (_, next) {
+      next.whenOrNull<void>(
+        loadFailure: (errorMessage) {
+          showMacosAlertDialog(
+            context: context,
+            builder: (context) {
+              return MacosAlertDialog(
+                appIcon: const FlutterLogo(
+                  size: 56,
+                ),
+                title: Text(
+                  'Failed to load data',
+                  style: MacosTheme.of(context).typography.headline,
+                ),
+                message: Text(
+                  errorMessage ?? "Something went wrong",
+                  textAlign: TextAlign.center,
+                  style: MacosTheme.of(context).typography.headline,
+                ),
+                primaryButton: PushButton(
+                  buttonSize: ButtonSize.large,
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              );
+            },
+          );
+        },
+      );
+    });
   }
 }

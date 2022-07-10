@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/app/views/main_view.dart';
-import 'package:flutter_tips/bootstrap.dart';
+import 'package:flutter_tips/provider_observer/provider_observer.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class App extends StatelessWidget {
@@ -9,7 +10,8 @@ class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BootStrap(
+    return ProviderScope(
+      observers: [Logger()],
       child: MacosApp(
         title: 'Flutter Tips',
         theme: MacosThemeData.light(),
