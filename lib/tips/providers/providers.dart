@@ -4,9 +4,9 @@ import 'package:flutter_tips/tips/state/tips_state.dart';
 import 'package:tips_and_tricks_api/tips_and_tricks_api.dart';
 import 'package:tips_repository/tips_repository.dart';
 
-final _tipsAndTricksApiProvider = Provider<TipsAndTricksApiClient>(
+final _tipsAndTricksDataProvider = Provider<TipsAndTricksApiClient>(
   (ref) {
-    return TipsAndTricksApiClient()..addInterceptors();
+    return TipsAndTricksApiClient();
   },
   name: "TipsAndTricksApiClient",
 );
@@ -14,7 +14,7 @@ final _tipsAndTricksApiProvider = Provider<TipsAndTricksApiClient>(
 final _tipsRepositoryProvider = Provider<TipsRepository>(
   (ref) {
     return TipsRepository(
-      tipsAndTricksApiClient: ref.watch(_tipsAndTricksApiProvider),
+      tipsAndTricksApiClient: ref.watch(_tipsAndTricksDataProvider),
     );
   },
   name: "TipsRepository",

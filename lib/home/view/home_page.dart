@@ -47,21 +47,19 @@ class HomePage extends StatelessWidget {
                         return Center(
                           child: PushButton(
                             buttonSize: ButtonSize.large,
-                            onPressed: () async {
+                            onPressed: () {
                               // Navigator.of(context).push(
                               //   Details.route(),
                               // );
-                              await ref
-                                  .read(tipsNotifierProvider.notifier)
-                                  .getData();
+                              ref.read(tipsNotifierProvider.notifier).getData();
                             },
                             child: const Text('Get data'),
                           ),
                         );
                       },
                       loadInProgress: () {
-                        return const SpinKitSpinningLines(
-                          color: Colors.blue,
+                        return SpinKitSpinningLines(
+                          color: const Color(0xFF1B1B28).withOpacity(0.6),
                         );
                       },
                       loadSuccess: (_, __) {
@@ -71,10 +69,8 @@ class HomePage extends StatelessWidget {
                         return Center(
                           child: PushButton(
                             buttonSize: ButtonSize.large,
-                            onPressed: () async {
-                              await ref
-                                  .read(tipsNotifierProvider.notifier)
-                                  .getData();
+                            onPressed: () {
+                              ref.read(tipsNotifierProvider.notifier).getData();
                             },
                             child: const Text('Reload'),
                           ),
@@ -92,37 +88,40 @@ class HomePage extends StatelessWidget {
   }
 
   void _listen({required WidgetRef ref, required BuildContext context}) {
-    ref.listen<TipsState>(tipsNotifierProvider, (_, next) {
-      next.whenOrNull<void>(
-        loadFailure: (errorMessage) {
-          showMacosAlertDialog(
-            context: context,
-            builder: (context) {
-              return MacosAlertDialog(
-                appIcon: const FlutterLogo(
-                  size: 56,
-                ),
-                title: Text(
-                  'Failed to load data',
-                  style: MacosTheme.of(context).typography.headline,
-                ),
-                message: Text(
-                  errorMessage ?? "Something went wrong",
-                  textAlign: TextAlign.center,
-                  style: MacosTheme.of(context).typography.headline,
-                ),
-                primaryButton: PushButton(
-                  buttonSize: ButtonSize.large,
-                  child: const Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              );
-            },
-          );
-        },
-      );
-    });
+    ref.listen<TipsState>(
+      tipsNotifierProvider,
+      (_, next) {
+        next.whenOrNull<void>(
+          loadFailure: (errorMessage) {
+            showMacosAlertDialog(
+              context: context,
+              builder: (context) {
+                return MacosAlertDialog(
+                  appIcon: const FlutterLogo(
+                    size: 56,
+                  ),
+                  title: Text(
+                    'Failed to load data',
+                    style: MacosTheme.of(context).typography.headline,
+                  ),
+                  message: Text(
+                    errorMessage ?? "Something went wrong",
+                    textAlign: TextAlign.center,
+                    style: MacosTheme.of(context).typography.headline,
+                  ),
+                  primaryButton: PushButton(
+                    buttonSize: ButtonSize.large,
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
   }
 }

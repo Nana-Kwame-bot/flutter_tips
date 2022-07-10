@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:tips_and_tricks_api/tips_and_tricks_api.dart';
 import 'package:tips_repository/src/models/tip_url.model.dart';
 
@@ -9,11 +8,10 @@ class TipsRepository {
 
   final TipsAndTricksApiClient _tipsAndTricksApiClient;
 
-  Future<Response<String>> Function() get responseData {
-    return _tipsAndTricksApiClient.getData;
-  }
+  Future<List<TipUrl>> getTips() async {
+    final responseData = await _tipsAndTricksApiClient.getData();
+    final data = responseData.data as String;
 
-  List<TipUrl> getTips({required String data}) {
     final markdownUrls =
         _tipsAndTricksApiClient.getMarkdownUrls(responseData: data);
 

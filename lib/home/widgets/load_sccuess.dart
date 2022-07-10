@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_tips/home/widgets/load_more.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
 
@@ -50,12 +51,15 @@ class _LoadSuccessState extends State<LoadSuccess> {
                             return ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: CachedNetworkImage(
+                                fit: BoxFit.fill,
                                 memCacheWidth: constraints.maxWidth.toInt(),
                                 imageUrl: tips[index].imageUrl,
-                                fit: BoxFit.fill,
                                 placeholder: (context, url) {
-                                  return const CircularProgressIndicator
-                                      .adaptive();
+                                  return SpinKitSpinningLines(
+                                    size: 35,
+                                    color: const Color(0xFF1B1B28)
+                                        .withOpacity(0.6),
+                                  );
                                 },
                                 errorWidget: (context, url, error) {
                                   return Card(

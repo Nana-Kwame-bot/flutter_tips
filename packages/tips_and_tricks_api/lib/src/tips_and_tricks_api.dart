@@ -8,19 +8,19 @@ const _rawBlobRoot =
     'https://raw.githubusercontent.com/vandadnp/flutter-tips-and-tricks/main/';
 
 class TipsAndTricksApiClient {
-  TipsAndTricksApiClient({Dio? dio})
-      : _dio = dio ??
-            Dio(
-              BaseOptions(
-                baseUrl: 'https://bit.ly',
-                connectTimeout: 5000,
-                receiveTimeout: 3000,
-              ),
-            );
+  TipsAndTricksApiClient() {
+    _addInterceptors();
+  }
 
-  final Dio _dio;
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: 'https://bit.ly',
+      connectTimeout: 5000,
+      receiveTimeout: 3000,
+    ),
+  );
 
-  void addInterceptors() {
+  void _addInterceptors() {
     _dio.interceptors
       ..add(LoggerInterceptor())
       ..add(RetryInterceptor(

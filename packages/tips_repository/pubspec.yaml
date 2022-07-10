@@ -9,7 +9,6 @@ environment:
   sdk: '>=2.17.3 <3.0.0'
 
 dependencies:
-  dio: ^4.0.6
   tips_and_tricks_api:
     path: ../tips_and_tricks_api
   equatable: ^2.0.3

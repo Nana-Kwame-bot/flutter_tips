@@ -15,15 +15,13 @@ class TipsNotifier extends StateNotifier<TipsState> {
   final TipsRepository _tipsRepository;
 
   Future<void> getData() async {
-    state = const TipsState.loadInProgress();
     try {
-      final response = await _tipsRepository.responseData();
-      final tips = _tipsRepository.getTips(data: response.data as String);
+      state = const TipsState.loadInProgress();
+      final tips = await _tipsRepository.getTips();
       state = TipsState.loadSuccess(tips: tips, currentItemCount: 9);
       logger.i(tips.first);
     } on DioException catch (e) {
       state = TipsState.loadFailure(errorMessage: e.errorMessage);
-      logger.e(e.errorMessage);
     } catch (_) {
       state = const TipsState.loadFailure();
     }

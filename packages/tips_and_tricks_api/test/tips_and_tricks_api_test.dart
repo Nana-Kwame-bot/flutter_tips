@@ -22,7 +22,7 @@ void main() {
 
     setUp(() {
       dio = MockDio();
-      tipsAndTricksApiClient = TipsAndTricksApiClient(dio: dio);
+      tipsAndTricksApiClient = TipsAndTricksApiClient();
     });
 
     group('Constructor', () {
@@ -52,7 +52,7 @@ void main() {
       });
 
       test("has intercepters added", () {
-        when(() => tipsAndTricksApiClient.addInterceptors());
+        // when(() => tipsAndTricksApiClient.addInterceptors());
         expect(dio.interceptors, Interceptors().isNotEmpty);
       });
     });
