@@ -6,10 +6,10 @@ A starter Flutter app for macOS with `macos_ui`. Based on Vandad Nahavandipoor's
 
 # So far I've learnt a few things like:
 
-- [RIverpod: as Statemanagement]
-- [Slivers: for fancy scrolling animations]
-- [Dio: for htttp networking]
-- [The MacOS Ecosystem]
+- Riverpod: for Statemanagement
+- Slivers: for fancy scrolling animations
+- Dio: for htttp networking
+- The MacOS Ecosystem
 
 ## Getting Started
 
