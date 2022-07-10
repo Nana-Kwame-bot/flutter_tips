@@ -4,7 +4,7 @@ A macOS app built with [macos_ui](https://macosui.dev/). Based on Vandad Nahavan
 
 - [A Collection of Flutter and Dart Tips and Tricks](https://github.com/vandadnp/flutter-tips-and-tricks)
 
-# Using this project to learn things like:
+# Used this project to learn things like:
 
 - Riverpod: for Statemanagement
 - Slivers: for fancy scrolling animations
