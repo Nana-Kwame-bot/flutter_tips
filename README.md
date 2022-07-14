@@ -22,6 +22,7 @@ flutter pub run build_runner build
 # Showcase
 - Loading
 ![](https://github.com/Nana-Kwame-bot/flutter_tips/blob/master/assets/gifs/tips.gif)
+
 - Searching
 ![](https://github.com/Nana-Kwame-bot/flutter_tips/blob/master/assets/gifs/tips_search.gif)
 
