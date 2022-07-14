@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_tips/app/views/about_window.dart';
 import 'package:flutter_tips/app/views/app.dart';
@@ -28,6 +29,7 @@ void main(List<String> args) async {
       ),
     );
   } else {
+    EquatableConfig.stringify = true;
     runApp(const App());
   }
 }

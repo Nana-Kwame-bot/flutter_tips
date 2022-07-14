@@ -12,6 +12,7 @@ dependencies:
   tips_and_tricks_api:
     path: ../tips_and_tricks_api
   equatable: ^2.0.3
+  dio: ^4.0.6
 
 dev_dependencies:
   lints: ^2.0.0

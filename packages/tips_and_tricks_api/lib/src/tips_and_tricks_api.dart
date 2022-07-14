@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tips_and_tricks_api/src/api_interceptor.dart';
 import 'package:tips_and_tricks_api/src/exceptions.dart';
 // https://raw.githubusercontent.com/vandadnp/flutter-tips-and-tricks/main/README.md
@@ -42,15 +45,43 @@ class TipsAndTricksApiClient {
     try {
       return await _dio.get<String>("/2V1GKsC");
     } on DioError catch (e) {
+      logger.e(e.message);
       throw DioException.fromDioError(dioError: e);
     } catch (_) {
       throw const DioException();
     }
   }
 
-  List<String> getMarkdownUrls({required String responseData}) {
-    final split = responseData.split('\n').map((e) => e.trim()).toList()
+  Future<String> downloadCodeTemporarily({
+    required String codeUrl,
+    required String fileName,
+    required CancelToken cancelToken,
+  }) async {
+    final path = await _getTemporaryPath(fileName);
+    try {
+      await _dio.download(
+        codeUrl,
+        path,
+        cancelToken: cancelToken,
+      );
+      return path;
+    } on DioError catch (e) {
+      logger.e(e.message);
+      throw DioException.fromDioError(dioError: e);
+    } catch (_) {
+      throw const DioException();
+    }
+  }
+
+  void downloadCodePermanently() {}
+
+  List<String> getRawData({required String responseData}) {
+    return responseData.split('\n').map((e) => e.trim()).toList()
       ..retainWhere((element) => element.endsWith(".md)"));
+  }
+
+  List<String> getMarkdownUrls({required List<String> urls}) {
+    final split = urls;
 
     final firstCleaning = split.map((e) => e.replaceAll("](", "+"));
     final secondCleaning =
@@ -59,6 +90,22 @@ class TipsAndTricksApiClient {
     final fourthCleaning = thirdCleaning.map((e) => e.replaceAll(")", ""));
 
     return fourthCleaning.toList();
+  }
+
+  List<String> getTitles({required List<String> urls}) {
+    final rawUrls = urls;
+
+    final firstCleaning = rawUrls.map((e) => e.replaceAll("](", "?"));
+
+    final secondCleaning = firstCleaning.map((e) => e.replaceAll("[", ""));
+
+    final thirdCleaning = secondCleaning.map((e) => e.replaceAll("*", ""));
+
+    final fourthCleaning = thirdCleaning.map((e) => e.split("?").first);
+
+    final fifthCleaning = fourthCleaning.map((e) => e.trim());
+
+    return fifthCleaning.toList();
   }
 
   List<String> getImageUrls({required List<String> urls}) {
@@ -80,9 +127,15 @@ class TipsAndTricksApiClient {
     return secondCleaning.toList();
   }
 
-// Future<String> _getPath(String fileName) async {
-//   Directory appDocDir = await getApplicationDocumentsDirectory();
-//   String appDocPath = appDocDir.path;
-//   return "$appDocPath/$fileName";
-// }
+  Future<String> _getPermanentPath(String fileName) async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    return "$appDocPath/$fileName";
+  }
+
+  Future<String> _getTemporaryPath(String fileName) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    return "$tempPath/$fileName";
+  }
 }

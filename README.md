@@ -7,7 +7,7 @@ A macOS app built with [macos_ui](https://macosui.dev/). Based on Vandad Nahavan
 # Used this project to learn things like:
 
 - Riverpod: for Statemanagement
-- Slivers: for fancy scrolling animations
+- Slivers and NestedScrollView : for fancy scrolling animations
 - Dio: for htttp networking
 - The MacOS Ecosystem
 
@@ -20,6 +20,9 @@ flutter pub run build_runner build
 ```
 
 # Showcase
-
+- Loading
 ![](https://github.com/Nana-Kwame-bot/flutter_tips/blob/master/assets/gifs/tips.gif)
+- Searching
+![](https://github.com/Nana-Kwame-bot/flutter_tips/blob/master/assets/gifs/tips_search.gif)
+
 

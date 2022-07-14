@@ -1,17 +1,25 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 import 'package:tips_repository/tips_repository.dart';
 
-part 'tips_state.freezed.dart';
+class TipsState extends Equatable {
+  final List<Tip> tips;
+  final int currentItemCount;
 
-@freezed
-class TipsState with _$TipsState {
-  const factory TipsState.initial() = _Initial;
-  const factory TipsState.loadInProgress() = _LoadInProgress;
-  const factory TipsState.loadSuccess({
-    required List<TipUrl> tips,
-    required int currentItemCount,
-  }) = _LoadSuccess;
-  const factory TipsState.loadFailure({
-    @Default("Something went wrong") String? errorMessage,
-  }) = _LoadFailure;
+  const TipsState({
+    required this.tips,
+    required this.currentItemCount,
+  });
+
+  TipsState copyWith({
+    List<Tip>? tips,
+    int? currentItemCount,
+  }) {
+    return TipsState(
+      tips: tips ?? this.tips,
+      currentItemCount: currentItemCount ?? this.currentItemCount,
+    );
+  }
+
+  @override
+  List<Object> get props => [tips, currentItemCount];
 }
