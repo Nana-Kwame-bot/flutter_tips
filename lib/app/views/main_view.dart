@@ -8,6 +8,9 @@ import 'package:macos_ui/macos_ui.dart';
 class MainView extends StatefulWidget {
   const MainView({super.key});
 
+  static const String name = "main_view";
+  static const String path = "/";
+
   @override
   State<MainView> createState() => _MainViewState();
 }

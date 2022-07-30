@@ -7,6 +7,9 @@ import 'package:macos_ui/macos_ui.dart';
 class TipDetails extends ConsumerWidget {
   const TipDetails({super.key});
 
+  static const String name = "tip_details";
+  static const String path = "tip_details";
+
   static Route<void> route() {
     return CupertinoPageRoute(
       builder: (context) {

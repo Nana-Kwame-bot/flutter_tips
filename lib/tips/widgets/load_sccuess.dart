@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_tips/tip_details/view/tip_details.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
-import 'package:flutter_tips/tips/view/widgets/tips_search_field.dart';
 import 'package:flutter_tips/tips/widgets/load_more.dart';
+import 'package:flutter_tips/tips/widgets/tips_search_field.dart';
+import 'package:go_router/go_router.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class LoadSuccess extends StatefulWidget {
@@ -59,55 +61,64 @@ class _LoadSuccessState extends State<LoadSuccess> {
                       delegate: SliverChildBuilderDelegate(
                         childCount: currentTips.length,
                         (context, index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: MacosTheme.of(context)
-                                    .tooltipTheme
-                                    .textStyle!
-                                    .color!,
+                          return GestureDetector(
+                            onDoubleTap: () {
+                              ref.read(tipsSearchProvider.notifier).selectTip(
+                                    selectedTipTile: currentTips[index].title,
+                                  );
+                              context.goNamed(TipDetails.name);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: MacosTheme.of(context)
+                                      .tooltipTheme
+                                      .textStyle!
+                                      .color!,
+                                ),
                               ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Hero(
-                                tag: currentTips[index].imageUrl,
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.fill,
-                                  memCacheWidth: constraints.maxWidth.toInt(),
-                                  imageUrl: currentTips[index].imageUrl,
-                                  placeholder: (context, url) {
-                                    return SpinKitSpinningLines(
-                                      size: 35,
-                                      color: MacosTheme.of(context)
-                                          .tooltipTheme
-                                          .textStyle!
-                                          .color!,
-                                    );
-                                  },
-                                  errorWidget: (context, url, error) {
-                                    return Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Icon(
-                                            CupertinoIcons
-                                                .exclamationmark_circle_fill,
-                                            color: Colors.redAccent,
-                                          ),
-                                          Text(
-                                            "Failed to get image",
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Hero(
+                                  tag: currentTips[index].imageUrl,
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.fill,
+                                    memCacheWidth: constraints.maxWidth.toInt(),
+                                    imageUrl: currentTips[index].imageUrl,
+                                    placeholder: (context, url) {
+                                      return SpinKitSpinningLines(
+                                        size: 35,
+                                        color: MacosTheme.of(context)
+                                            .tooltipTheme
+                                            .textStyle!
+                                            .color!,
+                                      );
+                                    },
+                                    errorWidget: (context, url, error) {
+                                      return Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Icon(
+                                              CupertinoIcons
+                                                  .exclamationmark_circle_fill,
+                                              color: Colors.redAccent,
+                                            ),
+                                            Text(
+                                              "Failed to get image",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),

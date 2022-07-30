@@ -43,8 +43,7 @@ class TipsRepository {
         codeUrl: codeUrls[index],
         title: titles[index],
       );
-    })
-      ..shuffle();
+    });
     return tipsUrls;
   }
 }

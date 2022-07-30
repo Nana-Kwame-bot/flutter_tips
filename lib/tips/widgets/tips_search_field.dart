@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tips/tip_details/view/details.dart';
+import 'package:flutter_tips/main.dart';
+import 'package:flutter_tips/tip_details/view/tip_details.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
+import 'package:go_router/go_router.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class TipsSearchField extends ConsumerWidget {
@@ -12,6 +14,7 @@ class TipsSearchField extends ConsumerWidget {
     final tipsState = ref.watch(tipsProvider);
     final allTips = tipsState.whenOrNull(
       data: (data) {
+        logger.i("Length ${data.tips.length}");
         return data.tips;
       },
     )!;
@@ -25,7 +28,7 @@ class TipsSearchField extends ConsumerWidget {
         ref.read(tipsSearchProvider.notifier).selectTip(
               searchResultItem: searchResultItem,
             );
-        Navigator.push(context, TipDetails.route());
+        context.goNamed(TipDetails.name);
       },
       placeholder: "Search for a tip...",
     );

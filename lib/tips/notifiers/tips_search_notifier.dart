@@ -9,16 +9,32 @@ class TipsSearchNotifier extends StateNotifier<Tip> {
 
   final List<Tip> currentTips;
 
-  void selectTip({required SearchResultItem searchResultItem}) {
-    for (var element in currentTips) {
-      if (element.title == searchResultItem.searchKey) {
-        state = Tip(
-          imageUrl: element.imageUrl,
-          codeUrl: element.codeUrl,
-          title: element.title,
-        );
-        return;
-      }
+  void selectTip({
+    SearchResultItem? searchResultItem,
+    String? selectedTipTile,
+  }) {
+    if (searchResultItem != null) {
+      state = currentTips.firstWhere(
+        (tip) => tip.title == searchResultItem.searchKey,
+        orElse: () => Tip(
+          imageUrl: currentTips.first.imageUrl,
+          codeUrl: currentTips.first.codeUrl,
+          title: currentTips.first.title,
+        ),
+      );
+      return;
+    }
+    assert(selectedTipTile != null);
+    if (selectedTipTile != null) {
+      state = currentTips.firstWhere(
+        (tip) => tip.title == selectedTipTile,
+        orElse: () => Tip(
+          imageUrl: currentTips.first.imageUrl,
+          codeUrl: currentTips.first.codeUrl,
+          title: currentTips.first.title,
+        ),
+      );
+      return;
     }
   }
 }
