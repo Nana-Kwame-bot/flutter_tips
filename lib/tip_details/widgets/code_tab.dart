@@ -12,16 +12,17 @@ class CodeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: MacosTheme.of(context).tooltipTheme.textStyle!.color!,
+          color: MacosTheme.of(context).canvasColor,
         ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Material(
+          color: MacosTheme.of(context).canvasColor,
           child: Consumer(
             builder: (context, ref, child) {
               final codeState = ref.watch(codeProvider);
@@ -75,7 +76,7 @@ class CodeTab extends StatelessWidget {
     ref.listen<AsyncValue<String>>(codeProvider, (_, next) {
       next.whenOrNull<void>(
         error: (object, stackTrace) {
-          showMacosAlertDialog(
+          showMacosAlertDialog<void>(
             context: context,
             builder: (context) {
               return MacosAlertDialog(

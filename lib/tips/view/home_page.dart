@@ -101,7 +101,7 @@ class HomePage extends StatelessWidget {
         next.whenOrNull<void>(
           error: (object, stackTrace) {
             final dioException = object as DioException;
-            showMacosAlertDialog(
+            showMacosAlertDialog<void>(
               context: context,
               builder: (context) {
                 return MacosAlertDialog(

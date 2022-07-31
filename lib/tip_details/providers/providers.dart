@@ -10,7 +10,7 @@ final _saveCodeTempProvider = StateNotifierProvider.autoDispose<
     // An object from package:dio that allows cancelling http requests
     final cancelToken = CancelToken();
     // When the provider is destroyed, cancel the http request
-    ref.onDispose(() => cancelToken.cancel());
+    ref.onDispose(cancelToken.cancel);
 
     final selectedTip = ref.watch(tipsSearchProvider);
 

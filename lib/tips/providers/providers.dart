@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tips/notifiers/tips_notifier.dart';
 import 'package:flutter_tips/tips/notifiers/tips_search_notifier.dart';
@@ -51,10 +50,11 @@ final allTipsProvider = Provider<List<Tip>>((ref) {
   return allTips;
 });
 
-final tipsSearchProvider = StateNotifierProvider<TipsSearchNotifier, Tip>(
+final tipsSearchProvider =
+    StateNotifierProvider.autoDispose<TipsSearchNotifier, Tip>(
   (ref) {
     final allTips = ref.watch(allTipsProvider);
-    return TipsSearchNotifier(currentTips: allTips);
+    return TipsSearchNotifier(allTips: allTips);
   },
   name: "TipsSearchNotifier",
 );

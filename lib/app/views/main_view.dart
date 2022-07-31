@@ -1,22 +1,31 @@
 import 'dart:convert';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/main.dart';
 import 'package:flutter_tips/tips/view/home_page.dart';
 import 'package:macos_ui/macos_ui.dart';
 
-class MainView extends StatefulWidget {
+class MainView extends ConsumerStatefulWidget {
   const MainView({super.key});
 
   static const String name = "main_view";
   static const String path = "/";
 
   @override
-  State<MainView> createState() => _MainViewState();
+  ConsumerState<MainView> createState() => _MainViewState();
 }
 
-class _MainViewState extends State<MainView> {
+class _MainViewState extends ConsumerState<MainView> {
   int _pageIndex = 0;
+
+  void _setWindow({required WindowController windowController}) {
+    windowController
+      ..setFrame(Offset.zero & const Size(350, 350))
+      ..center()
+      ..setTitle('About Flutter Tips')
+      ..show();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +47,7 @@ class _MainViewState extends State<MainView> {
                   ),
                 );
                 logger.d('${window.runtimeType}');
-                window
-                  ..setFrame(const Offset(0, 0) & const Size(350, 350))
-                  ..center()
-                  ..setTitle('About Flutter Tips')
-                  ..show();
+                _setWindow(windowController: window);
               },
             ),
             const PlatformProvidedMenuItem(

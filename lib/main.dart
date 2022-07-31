@@ -12,7 +12,6 @@ final Logger logger = Logger(
   // Customize the printer
   printer: PrettyPrinter(
     methodCount: 0,
-    printTime: false,
   ),
 );
 
@@ -20,7 +19,7 @@ void main(List<String> args) async {
   if (args.firstOrNull == 'multi_window') {
     final windowId = int.parse(args[1]);
     final arguments = args[2].isEmpty
-        ? const {}
+        ? const <String, dynamic>{}
         : jsonDecode(args[2]) as Map<String, dynamic>;
     runApp(
       AboutWindow(

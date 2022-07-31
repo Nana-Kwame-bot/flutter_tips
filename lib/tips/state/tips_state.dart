@@ -2,13 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:tips_repository/tips_repository.dart';
 
 class TipsState extends Equatable {
-  final List<Tip> tips;
-  final int currentItemCount;
 
   const TipsState({
     required this.tips,
     required this.currentItemCount,
   });
+  final List<Tip> tips;
+  final int currentItemCount;
 
   TipsState copyWith({
     List<Tip>? tips,

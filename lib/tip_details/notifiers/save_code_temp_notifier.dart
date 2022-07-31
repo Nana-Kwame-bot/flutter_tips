@@ -23,7 +23,7 @@ class SaveCodeFileTempNotifier extends StateNotifier<AsyncValue<String>> {
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
-      return await _tipsRepository.getTempPathAndSaveCodeTemporarily(
+      return _tipsRepository.getTempPathAndSaveCodeTemporarily(
         codeUrl: selectedTip.codeUrl,
         fileName: fileName,
         cancelToken: cancelToken,

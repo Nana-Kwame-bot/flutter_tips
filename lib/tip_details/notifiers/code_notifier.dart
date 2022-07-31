@@ -15,8 +15,8 @@ class CodeNotifier extends StateNotifier<AsyncValue<String>> {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final codeString = await _readCodeFile(path: codeFilePath);
-      final splitString = codeString.split("\n");
-      splitString.removeWhere((element) => element.startsWith("//"));
+      final splitString = codeString.split("\n")
+        ..removeWhere((element) => element.startsWith("//"));
       // if (splitString.first.isEmpty) {
       //   splitString.removeAt(0);
       // }

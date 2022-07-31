@@ -30,6 +30,6 @@ final goRouter = GoRouter(
               // return goingToDetails ? null : TipDetails.path;
             },
           ),
-        ]),
+        ],),
   ],
 );

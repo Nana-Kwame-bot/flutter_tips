@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tips/main.dart';
 import 'package:flutter_tips/tip_details/view/tip_details.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:go_router/go_router.dart';
@@ -14,11 +13,10 @@ class TipsSearchField extends ConsumerWidget {
     final tipsState = ref.watch(tipsProvider);
     final allTips = tipsState.whenOrNull(
       data: (data) {
-        logger.i("Length ${data.tips.length}");
         return data.tips;
       },
     )!;
-    return MacosSearchField(
+    return MacosSearchField<String>(
       maxLines: 1,
       maxResultsToShow: 15,
       results: allTips.map((e) {

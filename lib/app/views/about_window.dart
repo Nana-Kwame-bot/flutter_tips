@@ -10,7 +10,7 @@ class AboutWindow extends StatelessWidget {
   });
 
   final WindowController windowController;
-  final Map? args;
+  final Map<dynamic, dynamic>? args;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,6 @@ class AboutWindow extends StatelessWidget {
               builder: (context, scrollController) {
                 return Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(

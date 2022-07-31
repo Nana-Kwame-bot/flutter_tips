@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tips/state/tips_state.dart';
-import 'dart:async';
 import 'package:tips_repository/tips_repository.dart';
 import 'package:tuple/tuple.dart';
 
@@ -24,21 +25,21 @@ class TipsNotifier extends StateNotifier<AsyncValue<TipsState>> {
   }
 
   void loadMore() {
-    Tuple2<List<Tip>, int> stateItems = state.whenOrNull(
+    final stateItems = state.whenOrNull(
       data: (data) {
         return Tuple2(data.tips, data.currentItemCount);
       },
     )!;
 
-    var tips = stateItems.item1;
-    var totalItemCount = tips.length;
+    final tips = stateItems.item1;
+    final totalItemCount = tips.length;
     var currentItemCount = stateItems.item2;
 
     if (currentItemCount < totalItemCount) {
       if (totalItemCount - currentItemCount <= 9) {
         state = AsyncValue.data(
           TipsState(
-            currentItemCount: (totalItemCount - currentItemCount),
+            currentItemCount: totalItemCount - currentItemCount,
             tips: tips,
           ),
         );
