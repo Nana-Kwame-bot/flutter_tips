@@ -3,17 +3,22 @@ description: A starting point for Dart libraries or applications.
 version: 1.0.0
 # homepage: https://www.example.com
 
-publish_to: 'none'
+publish_to: "none"
 
 environment:
-  sdk: '>=2.17.3 <3.0.0'
+  sdk: ">=2.17.3 <3.0.0"
 
 dependencies:
   tips_and_tricks_api:
     path: ../tips_and_tricks_api
   equatable: ^2.0.3
   dio: ^4.0.6
+  freezed_annotation: ^2.0.3
+  json_annotation: ^4.5.0
 
 dev_dependencies:
+  build_runner: ^2.1.10
   lints: ^2.0.0
   test: ^1.16.0
+  freezed: ^2.0.3+1
+  json_serializable: ^6.2.0

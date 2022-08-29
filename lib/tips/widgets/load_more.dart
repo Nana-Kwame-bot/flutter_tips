@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tips/tips/providers/providers.dart';
+import 'package:flutter_tips/tips/notifiers/tips_notifier.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class LoadMore extends StatelessWidget {

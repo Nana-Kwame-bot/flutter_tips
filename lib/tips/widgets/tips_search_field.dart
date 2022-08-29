@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tip_details/view/tip_details.dart';
+import 'package:flutter_tips/tips/notifiers/tips_notifier.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -12,8 +13,8 @@ class TipsSearchField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tipsState = ref.watch(tipsProvider);
     final allTips = tipsState.whenOrNull(
-      data: (data) {
-        return data.tips;
+      loaded: (data, _) {
+        return data;
       },
     )!;
     return MacosSearchField<String>(

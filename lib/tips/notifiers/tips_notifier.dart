@@ -1,33 +1,45 @@
-import 'dart:async';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tips/tips/state/tips_state.dart';
+import 'package:flutter_tips/tips/models/tip_state/tips_state.model.dart';
+import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:tips_repository/tips_repository.dart';
 import 'package:tuple/tuple.dart';
 
-class TipsNotifier extends StateNotifier<AsyncValue<TipsState>> {
-  TipsNotifier({
-    required TipsRepository tipsRepository,
-  })  : _tipsRepository = tipsRepository,
-        super(const AsyncValue.loading()) {
-    getData();
-  }
+final tipsProvider = StateNotifierProvider<TipsNotifier, TipsState>(
+  (ref) {
+    return TipsNotifier(tipsRepository: ref.read(tipsRepositoryProvider));
+  },
+  name: "TipsNotifier",
+);
+
+class TipsNotifier extends StateNotifier<TipsState> {
+  TipsNotifier({required TipsRepository tipsRepository})
+      : _tipsRepository = tipsRepository,
+        super(const TipsState.initial());
 
   final TipsRepository _tipsRepository;
 
   Future<void> getData() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final tips = await _tipsRepository.getTips();
+    state = const TipsState.loading();
 
-      return TipsState(tips: tips, currentItemCount: 9);
-    });
+    final data = await AsyncValue.guard(_tipsRepository.getTips);
+
+    state = data.when<TipsState>(
+      data: (data) {
+        return TipsState.loaded(tips: data, currentItemCount: 9);
+      },
+      error: (object, stackTrace) {
+        return TipsState.error(error: object, stackTrace: stackTrace);
+      },
+      loading: () {
+        return const TipsState.loading();
+      },
+    );
   }
 
   void loadMore() {
     final stateItems = state.whenOrNull(
-      data: (data) {
-        return Tuple2(data.tips, data.currentItemCount);
+      loaded: (tips, itemCount) {
+        return Tuple2(tips, itemCount);
       },
     )!;
 
@@ -37,19 +49,16 @@ class TipsNotifier extends StateNotifier<AsyncValue<TipsState>> {
 
     if (currentItemCount < totalItemCount) {
       if (totalItemCount - currentItemCount <= 9) {
-        state = AsyncValue.data(
-          TipsState(
-            currentItemCount: totalItemCount - currentItemCount,
-            tips: tips,
-          ),
+        state = TipsState.loaded(
+          tips: tips,
+          currentItemCount: totalItemCount - currentItemCount,
         );
+        return;
       }
       currentItemCount = currentItemCount + 9;
-      state = AsyncValue.data(
-        TipsState(
-          tips: tips,
-          currentItemCount: currentItemCount,
-        ),
+      state = TipsState.loaded(
+        tips: tips,
+        currentItemCount: currentItemCount,
       );
     }
   }

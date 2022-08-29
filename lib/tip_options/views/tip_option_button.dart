@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tips/tip_details/providers/providers.dart';
 import 'package:flutter_tips/tip_details/view/tip_details.dart';
 import 'package:flutter_tips/tip_options/providers/providers.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
@@ -36,7 +37,12 @@ class TipOptionButton extends ConsumerWidget {
             const MacosPulldownMenuDivider(),
             MacosPulldownMenuItem(
               title: const Text("Save"),
-              onTap: () {},
+              onTap: () {
+                ref.read(tipsSearchProvider.notifier).selectTip(
+                      selectedTipTile: currentTips[index].title,
+                    );
+                ref.read(savedTipProvider.notifier).saveTip();
+              },
               label: "Save tip",
             ),
           ],

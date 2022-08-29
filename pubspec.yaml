@@ -25,6 +25,8 @@ dependencies:
   freezed_annotation: ^2.0.3
   go_router: ^4.2.2
   highlight: ^0.7.0
+  hydrated_riverpod:
+    git: https://github.com/Nana-Kwame-bot/hydrated_riverpod
   json_annotation: ^4.5.0
   logger: ^1.1.0
   macos_ui: ^1.7.0

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tips/notifiers/tips_notifier.dart';
 import 'package:flutter_tips/tips/notifiers/tips_search_notifier.dart';
-import 'package:flutter_tips/tips/state/tips_state.dart';
 import 'package:tips_and_tricks_api/tips_and_tricks_api.dart';
 import 'package:tips_repository/tips_repository.dart';
 
@@ -21,18 +20,11 @@ final tipsRepositoryProvider = Provider<TipsRepository>(
   name: "TipsRepository",
 );
 
-final tipsProvider = StateNotifierProvider<TipsNotifier, AsyncValue<TipsState>>(
-  (ref) {
-    return TipsNotifier(tipsRepository: ref.read(tipsRepositoryProvider));
-  },
-  name: "TipsNotifier",
-);
-
 final currentTipsProvider = Provider<List<Tip>>(
   (ref) {
     final currentTips = ref.watch(tipsProvider).whenOrNull<List<Tip>>(
-      data: (data) {
-        return data.tips.take(data.currentItemCount).toList();
+      loaded: (data, itemCount) {
+        return data.take(itemCount).toList();
       },
     )!;
 
@@ -43,8 +35,8 @@ final currentTipsProvider = Provider<List<Tip>>(
 
 final allTipsProvider = Provider<List<Tip>>((ref) {
   final allTips = ref.watch(tipsProvider).whenOrNull<List<Tip>>(
-    data: (data) {
-      return data.tips;
+    loaded: (data, _) {
+      return data;
     },
   )!;
   return allTips;

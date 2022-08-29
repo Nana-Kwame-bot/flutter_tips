@@ -73,7 +73,47 @@ class TipsAndTricksApiClient {
     }
   }
 
-  void downloadCodePermanently() {}
+  Future<String> downloadCodePermanently({
+    required String codeUrl,
+    required String codeFileName,
+    required CancelToken cancelToken,
+  }) async {
+    final path = await _getPermanentPath(codeFileName);
+    try {
+      await _dio.download(
+        codeUrl,
+        path,
+        cancelToken: cancelToken,
+      );
+      return path;
+    } on DioError catch (e) {
+      logger.e(e.message);
+      throw DioException.fromDioError(dioError: e);
+    } catch (_) {
+      throw const DioException();
+    }
+  }
+
+  Future<String> downloadImagePermanently({
+    required String imageUrl,
+    required String imageFileName,
+    required CancelToken cancelToken,
+  }) async {
+    final path = await _getPermanentPath(imageFileName);
+    try {
+      await _dio.download(
+        imageUrl,
+        path,
+        cancelToken: cancelToken,
+      );
+      return path;
+    } on DioError catch (e) {
+      logger.e(e.message);
+      throw DioException.fromDioError(dioError: e);
+    } catch (_) {
+      throw const DioException();
+    }
+  }
 
   List<String> getRawData({required String responseData}) {
     return responseData.split('\n').map((e) => e.trim()).toList()

@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_tips/tips/providers/providers.dart';
-import 'package:flutter_tips/tips/state/tips_state.dart';
-import 'package:flutter_tips/tips/widgets/load_sccuess.dart';
-import 'package:macos_ui/macos_ui.dart';
-import 'package:tips_and_tricks_api/tips_and_tricks_api.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_spinkit/flutter_spinkit.dart";
+import 'package:flutter_tips/tips/models/tip_state/tips_state.model.dart';
+import 'package:flutter_tips/tips/notifiers/tips_notifier.dart';
+import "package:flutter_tips/tips/widgets/load_sccuess.dart";
+import "package:macos_ui/macos_ui.dart";
+import "package:tips_and_tricks_api/tips_and_tricks_api.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,13 +17,13 @@ class HomePage extends StatelessWidget {
       builder: (context) {
         return MacosScaffold(
           toolBar: ToolBar(
-            title: const Text('Home'),
+            title: const Text("Home"),
             actions: [
               ToolBarIconButton(
-                label: 'Toggle Sidebar',
+                label: "Toggle Sidebar",
                 icon: const MacosIcon(CupertinoIcons.sidebar_left),
                 showLabel: false,
-                tooltipMessage: 'Toggle Sidebar',
+                tooltipMessage: "Toggle Sidebar",
                 onPressed: () {
                   MacosWindowScope.of(context).toggleSidebar();
                 },
@@ -44,6 +44,27 @@ class HomePage extends StatelessWidget {
                     _listen(context: context, ref: ref);
 
                     return tipsState.when(
+                      initial: () {
+                        return Center(
+                          child: Consumer(
+                            builder: (
+                              BuildContext context,
+                              WidgetRef ref,
+                              Widget? child,
+                            ) {
+                              return PushButton(
+                                buttonSize: ButtonSize.large,
+                                onPressed: () async {
+                                  await ref
+                                      .read(tipsProvider.notifier)
+                                      .getData();
+                                },
+                                child: const Text('Get data'),
+                              );
+                            },
+                          ),
+                        );
+                      },
                       loading: () {
                         return SpinKitSpinningLines(
                           color: MacosTheme.of(context)
@@ -52,39 +73,22 @@ class HomePage extends StatelessWidget {
                               .color!,
                         );
                       },
-                      data: (_) {
+                      loaded: (_, __) {
                         return const LoadSuccess();
                       },
                       error: (_, __) {
                         return Center(
                           child: PushButton(
                             buttonSize: ButtonSize.large,
-                            onPressed: () {
-                              ref.read(tipsProvider.notifier).getData();
+                            onPressed: () async {
+                              await ref.read(tipsProvider.notifier).getData();
                             },
-                            child: const Text('Reload'),
+                            child: const Text("Reload"),
                           ),
                         );
                       },
                     );
                   },
-                  // child: Center(
-                  //   child: Consumer(
-                  //     builder:
-                  //         (BuildContext context, WidgetRef ref, Widget? child) {
-                  //       return PushButton(
-                  //         buttonSize: ButtonSize.large,
-                  //         onPressed: () {
-                  //           // Navigator.of(context).push(
-                  //           //   Details.route(),
-                  //           // );
-                  //           ref.read(tipsProvider.notifier).getData();
-                  //         },
-                  //         child: const Text('Get data'),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
                 );
               },
             ),
@@ -95,11 +99,11 @@ class HomePage extends StatelessWidget {
   }
 
   void _listen({required WidgetRef ref, required BuildContext context}) {
-    ref.listen<AsyncValue<TipsState>>(
+    ref.listen<TipsState>(
       tipsProvider,
       (_, next) {
         next.whenOrNull<void>(
-          error: (object, stackTrace) {
+          error: (object, _) {
             final dioException = object as DioException;
             showMacosAlertDialog<void>(
               context: context,
@@ -109,7 +113,7 @@ class HomePage extends StatelessWidget {
                     size: 56,
                   ),
                   title: Text(
-                    'Failed to load data',
+                    "Failed to load data",
                     style: MacosTheme.of(context).typography.headline,
                   ),
                   message: Text(
@@ -119,7 +123,7 @@ class HomePage extends StatelessWidget {
                   ),
                   primaryButton: PushButton(
                     buttonSize: ButtonSize.large,
-                    child: const Text('OK'),
+                    child: const Text("OK"),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

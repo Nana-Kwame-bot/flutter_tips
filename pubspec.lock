@@ -352,6 +352,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.0"
+  hive:
+    dependency: transitive
+    description:
+      name: hive
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.3"
   http:
     dependency: transitive
     description:
@@ -373,6 +380,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
+  hydrated_riverpod:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "5e2550e8d8d01c6c27f11c9ff12d680dd3cda293"
+      url: "https://github.com/Nana-Kwame-bot/hydrated_riverpod"
+    source: git
+    version: "0.0.3"
   io:
     dependency: transitive
     description:
