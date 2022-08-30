@@ -23,15 +23,15 @@ class TipsNotifier extends StateNotifier<TipsState> {
 
     final data = await AsyncValue.guard(_tipsRepository.getTips);
 
-    state = data.when<TipsState>(
+    data.when<void>(
       data: (data) {
-        return TipsState.loaded(tips: data, currentItemCount: 9);
+        state = TipsState.loaded(tips: data, currentItemCount: 9);
       },
       error: (object, stackTrace) {
-        return TipsState.error(error: object, stackTrace: stackTrace);
+        state = TipsState.error(error: object, stackTrace: stackTrace);
       },
       loading: () {
-        return const TipsState.loading();
+        state = const TipsState.loading();
       },
     );
   }

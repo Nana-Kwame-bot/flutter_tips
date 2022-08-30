@@ -1,6 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:tips_repository/tips_repository.dart';
+
+final tipsSearchProvider = StateNotifierProvider<TipsSearchNotifier, Tip>(
+  (ref) {
+    final allTips = ref.watch(allTipsProvider);
+    return TipsSearchNotifier(allTips: allTips);
+  },
+  name: "TipsSearchNotifier",
+);
 
 class TipsSearchNotifier extends StateNotifier<Tip> {
   TipsSearchNotifier({
@@ -22,6 +31,7 @@ class TipsSearchNotifier extends StateNotifier<Tip> {
           title: allTips.first.title,
         ),
       );
+
       return;
     }
     assert(selectedTipTile != null, "selectedTipTile is not null");

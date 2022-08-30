@@ -1,33 +1,86 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tips/main.dart';
+import 'package:flutter_tips/tip_details/models/code_string/code_string.model.dart';
+import 'package:flutter_tips/tips/notifiers/tips_search_notifier.dart';
+import 'package:flutter_tips/tips/providers/providers.dart';
+import 'package:tips_repository/tips_repository.dart';
 
-class CodeNotifier extends StateNotifier<AsyncValue<String>> {
+final codeProvider =
+    StateNotifierProvider.autoDispose<CodeNotifier, CodeString>(
+  (ref) {
+    // An object from package:dio that allows cancelling http requests
+    final cancelToken = CancelToken();
+    // When the provider is destroyed, cancel the http request
+    ref.onDispose(cancelToken.cancel);
+
+    final selectedTip = ref.watch(tipsSearchProvider);
+
+    final tipsRepository = ref.read(tipsRepositoryProvider);
+
+    // If the request completed successfully, keep the state
+    ref.keepAlive();
+
+    return CodeNotifier(
+      selectedTip: selectedTip,
+      cancelToken: cancelToken,
+      tipsRepository: tipsRepository,
+    );
+  },
+  name: "CodeNotifier",
+);
+
+class CodeNotifier extends StateNotifier<CodeString> {
   CodeNotifier({
-    required this.codeFilePath,
-  }) : super(const AsyncValue.loading()) {
+    required TipsRepository tipsRepository,
+    required this.cancelToken,
+    required this.selectedTip,
+  })  : _tipsRepository = tipsRepository,
+        super(const CodeString.loading()) {
     getCodeString();
   }
 
-  final String codeFilePath;
+  final TipsRepository _tipsRepository;
+  final Tip selectedTip;
+  final CancelToken cancelToken;
 
   Future<void> getCodeString() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final codeString = await _readCodeFile(path: codeFilePath);
-      final splitString = codeString.split("\n")
-        ..removeWhere((element) => element.startsWith("//"));
-      // if (splitString.first.isEmpty) {
-      //   splitString.removeAt(0);
-      // }
+    state = const CodeString.loading();
 
-      return splitString.join("\n");
+    final codeFilePath = await _getTempFilePath();
+
+    codeFilePath.when<void>(
+      data: (path) async {
+        final codeString = await _readCodeFile(path: path);
+
+        final splitString = codeString.split("\n")
+          ..removeWhere((element) => element.startsWith("//"));
+        state = CodeString.loaded(codeString: splitString.join("\n"));
+      },
+      error: (error, stackTrace) {
+        state = CodeString.error(error: error, stackTrace: stackTrace);
+      },
+      loading: () {
+        state = const CodeString.loading();
+      },
+    );
+  }
+
+  Future<AsyncValue<String>> _getTempFilePath() async {
+    final fileName = selectedTip.codeUrl.split("/").last;
+
+    final codePath = await AsyncValue.guard(() {
+      return _tipsRepository.getTempPathAndSaveCodeTemporarily(
+        codeUrl: selectedTip.codeUrl,
+        fileName: fileName,
+        cancelToken: cancelToken,
+      );
     });
+
+    return codePath;
   }
 
   Future<String> _readCodeFile({required String path}) async {
-    logger.i("Path: $path");
-
     try {
       final file = File(path);
       // Read the file as a string

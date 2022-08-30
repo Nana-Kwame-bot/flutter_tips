@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tips/notifiers/tips_notifier.dart';
-import 'package:flutter_tips/tips/notifiers/tips_search_notifier.dart';
 import 'package:tips_and_tricks_api/tips_and_tricks_api.dart';
 import 'package:tips_repository/tips_repository.dart';
 
@@ -33,20 +32,14 @@ final currentTipsProvider = Provider<List<Tip>>(
   name: "CurrentTips",
 );
 
-final allTipsProvider = Provider<List<Tip>>((ref) {
-  final allTips = ref.watch(tipsProvider).whenOrNull<List<Tip>>(
-    loaded: (data, _) {
-      return data;
-    },
-  )!;
-  return allTips;
-});
-
-final tipsSearchProvider =
-    StateNotifierProvider.autoDispose<TipsSearchNotifier, Tip>(
+final allTipsProvider = Provider<List<Tip>>(
   (ref) {
-    final allTips = ref.watch(allTipsProvider);
-    return TipsSearchNotifier(allTips: allTips);
+    final allTips = ref.watch(tipsProvider).whenOrNull<List<Tip>>(
+      loaded: (data, _) {
+        return data;
+      },
+    )!;
+    return allTips;
   },
-  name: "TipsSearchNotifier",
+  name: "All Tips",
 );

@@ -1,36 +1,26 @@
 import 'package:flutter_tips/main.dart';
-import 'package:flutter_tips/tips/models/tip_state_list/tip_state_list.model.dart';
+import 'package:flutter_tips/tip_details/models/current_saved_tip/current_saved_tip.model.dart';
+import 'package:flutter_tips/tip_details/models/tip_state_list/tip_state_list.model.dart';
 import 'package:hydrated_riverpod/hydrated_riverpod.dart';
-import 'package:tips_repository/tips_repository.dart';
 
-class SavedTipsNotifier extends HydratedStateNotifier<TipStateList> {
-  SavedTipsNotifier({required this.latestTip}) : super(const TipStateList()) {
-    _addLatestTip();
-  }
+final savedTipsProvider =
+    StateNotifierProvider<SavedTipsNotifier, TipStateList>((ref) {
+  return SavedTipsNotifier();
+});
 
-  final SavedTip? latestTip;
+class SavedTipsNotifier extends StateNotifier<TipStateList> {
+  SavedTipsNotifier() : super(const TipStateList());
 
-  void _addLatestTip() {
-    if (latestTip == null) {
-      logger.i("Tip is null");
+  void addLatestTip({required CurrentSavedTip currentSavedTip}) {
+    currentSavedTip.maybeWhen(
+      loaded: (data) {
+        state = state.copyWith(savedTips: [...state.savedTips, data]);
 
-      return;
-    }
-    logger.i(
-      "Tip: $latestTip saved Codepath: ${latestTip!.codePath} Imagepath: ${latestTip!.imagePath}",
+        logger.i("Saved tip: $state");
+      },
+      orElse: () {
+        logger.i("Error saving tip");
+      },
     );
-
-    state = state.copyWith(savedTips: [...state.savedTips, latestTip!]);
-    logger.i("Saved tips: $state");
-  }
-
-  @override
-  TipStateList? fromJson(Map<String, dynamic> json) {
-    return TipStateList.fromJson(json);
-  }
-
-  @override
-  Map<String, dynamic>? toJson(TipStateList state) {
-    return state.toJson();
   }
 }

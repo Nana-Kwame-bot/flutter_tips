@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_tips/tip_details/view/tip_details.dart';
 import 'package:flutter_tips/tip_options/views/show_options.dart';
 import 'package:flutter_tips/tip_options/views/tip_option_button.dart';
+import 'package:flutter_tips/tips/notifiers/tips_search_notifier.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:flutter_tips/tips/widgets/load_more.dart';
 import 'package:flutter_tips/tips/widgets/tips_search_field.dart';

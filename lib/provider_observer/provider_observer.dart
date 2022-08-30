@@ -26,10 +26,17 @@ class Logger implements ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    logger.v(
-      "Provider: ${provider.name ?? provider.runtimeType}\n"
-      "Previous state: ${previousValue.runtimeType} \nCurrent state: ${newValue.runtimeType}",
-    );
+    if (provider.name == "TipsNotifier") {
+      logger.v(
+        "Provider: ${provider.name ?? provider.runtimeType}\n"
+        "Previous state: ${previousValue.runtimeType} \nCurrent state: ${newValue.runtimeType}",
+      );
+    } else {
+      logger.v(
+        "Provider: ${provider.name ?? provider.runtimeType}\n"
+        "Previous state: $previousValue \nCurrent state: $newValue",
+      );
+    }
   }
 
   @override
