@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tips/tip_details/notifiers/saved_tip_notifier.dart';
-import 'package:flutter_tips/tip_details/view/tip_details.dart';
+import 'package:flutter_tips/saved_tips/notifiers/saved_tips_notifier.dart';
+import 'package:flutter_tips/tip_details/views/tip_details.dart';
 import 'package:flutter_tips/tip_options/providers/providers.dart';
 import 'package:flutter_tips/tips/notifiers/tips_search_notifier.dart';
-import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 
-class TipOptionButton extends ConsumerWidget {
-  const TipOptionButton({super.key, required this.index});
+class SavedTipsOptionsButton extends ConsumerWidget {
+  const SavedTipsOptionsButton({super.key, required this.index});
 
   final int index;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hoverList = ref.watch(tipHoverProvider);
-    final currentTips = ref.watch(currentTipsProvider);
+    final hoverList = ref.watch(savedTipsHoverNotifierProvider);
+    final savedTips = ref.watch(savedTipsNotifierProvider).savedTips;
+
     return Positioned(
       top: 0,
       right: 0,
@@ -28,8 +28,8 @@ class TipOptionButton extends ConsumerWidget {
             MacosPulldownMenuItem(
               title: const Text("Open"),
               onTap: () {
-                ref.read(tipsSearchProvider.notifier).selectTip(
-                      selectedTipTile: currentTips[index].title,
+                ref.read(tipsSearchNotifierProvider.notifier).selectTip(
+                      selectedTipTile: savedTips[index].title,
                     );
                 context.goNamed(TipDetails.name);
               },
@@ -37,14 +37,13 @@ class TipOptionButton extends ConsumerWidget {
             ),
             const MacosPulldownMenuDivider(),
             MacosPulldownMenuItem(
-              title: const Text("Save"),
+              title: const Text("Remove"),
               onTap: () {
-                ref.read(tipsSearchProvider.notifier).selectTip(
-                      selectedTipTile: currentTips[index].title,
+                ref.read(savedTipsNotifierProvider.notifier).removeTip(
+                      savedTip: savedTips[index],
                     );
-                ref.read(savedTipProvider.notifier).saveTip();
               },
-              label: "Save tip",
+              label: "Remove tip",
             ),
           ],
         ),

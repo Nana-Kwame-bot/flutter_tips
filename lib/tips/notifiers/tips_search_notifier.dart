@@ -1,27 +1,23 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tips_repository/tips_repository.dart';
 
-final tipsSearchProvider = StateNotifierProvider<TipsSearchNotifier, Tip>(
-  (ref) {
-    final allTips = ref.watch(allTipsProvider);
-    return TipsSearchNotifier(allTips: allTips);
-  },
-  name: "TipsSearchNotifier",
-);
+part 'tips_search_notifier.g.dart';
 
-class TipsSearchNotifier extends StateNotifier<Tip> {
-  TipsSearchNotifier({
-    required this.allTips,
-  }) : super(const Tip(imageUrl: "", codeUrl: "", title: ""));
-
-  final List<Tip> allTips;
+@Riverpod(keepAlive: true)
+class TipsSearchNotifier extends _$TipsSearchNotifier {
+  @override
+  Tip build() {
+    return const Tip(imageUrl: "", codeUrl: "", title: "");
+  }
 
   void selectTip({
     SearchResultItem? searchResultItem,
     String? selectedTipTile,
   }) {
+    final allTips = ref.watch(alltipsProvider);
+
     if (searchResultItem != null) {
       state = allTips.firstWhere(
         (tip) => tip.title == searchResultItem.searchKey,

@@ -1,5 +1,14 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final pageIndexProvider = StateProvider<int>((ref) {
-  return 0;
-});
+part 'providers.g.dart';
+
+@riverpod
+class PageIndex extends _$PageIndex {
+  @override
+  int build() {
+    return 0;
+  }
+
+  @override
+  set state(int index) => super.state = index;
+}

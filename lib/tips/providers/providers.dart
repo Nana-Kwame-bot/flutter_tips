@@ -1,45 +1,39 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tips/notifiers/tips_notifier.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tips_and_tricks_api/tips_and_tricks_api.dart';
 import 'package:tips_repository/tips_repository.dart';
 
-final _tipsAndTricksDataProvider = Provider<TipsAndTricksApiClient>(
-  (ref) {
-    return TipsAndTricksApiClient();
-  },
-  name: "TipsAndTricksApiClient",
-);
+part 'providers.g.dart';
 
-final tipsRepositoryProvider = Provider<TipsRepository>(
-  (ref) {
-    return TipsRepository(
-      tipsAndTricksApiClient: ref.watch(_tipsAndTricksDataProvider),
-    );
-  },
-  name: "TipsRepository",
-);
+@Riverpod(keepAlive: true)
+TipsAndTricksApiClient tipsAndTricksData(TipsAndTricksDataRef ref) {
+  return TipsAndTricksApiClient();
+}
 
-final currentTipsProvider = Provider<List<Tip>>(
-  (ref) {
-    final currentTips = ref.watch(tipsProvider).whenOrNull<List<Tip>>(
-      loaded: (data, itemCount) {
-        return data.take(itemCount).toList();
-      },
-    )!;
+@Riverpod(keepAlive: true)
+TipsRepository tipsRepository(TipsRepositoryRef ref) {
+  return TipsRepository(
+    tipsAndTricksApiClient: ref.watch(tipsAndTricksDataProvider),
+  );
+}
 
-    return currentTips;
-  },
-  name: "CurrentTips",
-);
+@riverpod
+List<Tip> currentTips(CurrentTipsRef ref) {
+  final currentTips = ref.watch(tipsNotifierProvider).whenOrNull<List<Tip>>(
+    loaded: (data, itemCount) {
+      return data.take(itemCount).toList();
+    },
+  )!;
 
-final allTipsProvider = Provider<List<Tip>>(
-  (ref) {
-    final allTips = ref.watch(tipsProvider).whenOrNull<List<Tip>>(
-      loaded: (data, _) {
-        return data;
-      },
-    )!;
-    return allTips;
-  },
-  name: "All Tips",
-);
+  return currentTips;
+}
+
+@Riverpod(keepAlive: true)
+List<Tip> alltips(AlltipsRef ref) {
+  final allTips = ref.watch(tipsNotifierProvider).whenOrNull<List<Tip>>(
+    loaded: (data, _) {
+      return data;
+    },
+  )!;
+  return allTips;
+}

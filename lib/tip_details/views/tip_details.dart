@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tip_details/widgets/code_tab.dart';
 import 'package:flutter_tips/tip_details/widgets/image_tab.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class TipDetails extends ConsumerWidget {

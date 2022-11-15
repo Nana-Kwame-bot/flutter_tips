@@ -1,52 +1,44 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tip_details/models/code_string/code_string.model.dart';
 import 'package:flutter_tips/tips/notifiers/tips_search_notifier.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
-import 'package:tips_repository/tips_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final codeProvider =
-    StateNotifierProvider.autoDispose<CodeNotifier, CodeString>(
-  (ref) {
-    // An object from package:dio that allows cancelling http requests
-    final cancelToken = CancelToken();
-    // When the provider is destroyed, cancel the http request
-    ref.onDispose(cancelToken.cancel);
+part 'code_notifier.g.dart';
 
-    final selectedTip = ref.watch(tipsSearchProvider);
+// final codeProvider =
+//     StateNotifierProvider.autoDispose<CodeNotifier, CodeString>(
+//   (ref) {
+//     // An object from package:dio that allows cancelling http requests
+//     final cancelToken = CancelToken();
+//     // When the provider is destroyed, cancel the http request
+//     ref.onDispose(cancelToken.cancel);
 
-    final tipsRepository = ref.read(tipsRepositoryProvider);
+//     final selectedTip = ref.watch(tipsSearchProvider);
 
-    // If the request completed successfully, keep the state
-    ref.keepAlive();
+//     final tipsRepository = ref.read(tipsRepositoryProvider);
 
-    return CodeNotifier(
-      selectedTip: selectedTip,
-      cancelToken: cancelToken,
-      tipsRepository: tipsRepository,
-    );
-  },
-  name: "CodeNotifier",
-);
+//     // If the request completed successfully, keep the state
+//     ref.keepAlive();
 
-class CodeNotifier extends StateNotifier<CodeString> {
-  CodeNotifier({
-    required TipsRepository tipsRepository,
-    required this.cancelToken,
-    required this.selectedTip,
-  })  : _tipsRepository = tipsRepository,
-        super(const CodeString.loading()) {
-    getCodeString();
+//     return CodeNotifier(
+//       selectedTip: selectedTip,
+//       cancelToken: cancelToken,
+//       tipsRepository: tipsRepository,
+//     );
+//   },
+//   name: "CodeNotifier",
+// );
+
+@riverpod
+class CodeNotifier extends _$CodeNotifier {
+  @override
+  CodeString build({required CancelToken cancelToken}) {
+    return const CodeString.loading();
   }
 
-  final TipsRepository _tipsRepository;
-  final Tip selectedTip;
-  final CancelToken cancelToken;
-
   Future<void> getCodeString() async {
-    state = const CodeString.loading();
-
     final codeFilePath = await _getTempFilePath();
 
     codeFilePath.when<void>(
@@ -67,10 +59,14 @@ class CodeNotifier extends StateNotifier<CodeString> {
   }
 
   Future<AsyncValue<String>> _getTempFilePath() async {
+    final selectedTip = ref.watch(tipsSearchNotifierProvider);
+
+    final tipsRepository = ref.read(tipsRepositoryProvider);
+
     final fileName = selectedTip.codeUrl.split("/").last;
 
     final codePath = await AsyncValue.guard(() {
-      return _tipsRepository.getTempPathAndSaveCodeTemporarily(
+      return tipsRepository.getTempPathAndSaveCodeTemporarily(
         codeUrl: selectedTip.codeUrl,
         fileName: fileName,
         cancelToken: cancelToken,

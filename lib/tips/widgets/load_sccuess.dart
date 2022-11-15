@@ -1,16 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_tips/tip_details/view/tip_details.dart';
-import 'package:flutter_tips/tip_options/views/show_options.dart';
-import 'package:flutter_tips/tip_options/views/tip_option_button.dart';
+import 'package:flutter_tips/tip_details/views/tip_details.dart';
+import 'package:flutter_tips/tip_options/widgets/show_options.dart';
+import 'package:flutter_tips/tip_options/widgets/tip_option_button.dart';
 import 'package:flutter_tips/tips/notifiers/tips_search_notifier.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
 import 'package:flutter_tips/tips/widgets/load_more.dart';
 import 'package:flutter_tips/tips/widgets/tips_search_field.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class LoadSuccess extends ConsumerStatefulWidget {
@@ -73,7 +73,9 @@ class _LoadSuccessState extends ConsumerState<LoadSuccess> {
                             index: index,
                             child: GestureDetector(
                               onDoubleTap: () {
-                                ref.read(tipsSearchProvider.notifier).selectTip(
+                                ref
+                                    .read(tipsSearchNotifierProvider.notifier)
+                                    .selectTip(
                                       selectedTipTile: currentTips[index].title,
                                     );
                                 context.goNamed(TipDetails.name);

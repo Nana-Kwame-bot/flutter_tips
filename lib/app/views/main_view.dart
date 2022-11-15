@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/app/providers/providers.dart';
 import 'package:flutter_tips/main.dart';
+import 'package:flutter_tips/saved_tips/views/saved_tips_page.dart';
 import 'package:flutter_tips/tips/views/home_page.dart';
-import 'package:flutter_tips/tips/views/saved_tips_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class MainView extends StatelessWidget {
@@ -51,7 +51,7 @@ class MainView extends StatelessWidget {
           ],
         ),
       ],
-      body: Consumer(
+      child: Consumer(
         builder: (context, ref, child) {
           final _pageIndex = ref.watch(pageIndexProvider);
 
@@ -62,9 +62,7 @@ class MainView extends StatelessWidget {
                 return SidebarItems(
                   currentIndex: _pageIndex,
                   onChanged: (index) {
-                    ref.read(pageIndexProvider.notifier).update(
-                          (_) => index,
-                        );
+                    ref.read(pageIndexProvider.notifier).state = index;
                   },
                   items: const [
                     SidebarItem(

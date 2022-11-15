@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_tips/tips/notifiers/tips_search_notifier.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class ImageTab extends StatelessWidget {
@@ -24,7 +24,7 @@ class ImageTab extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             child: Consumer(
               builder: (context, ref, child) {
-                final tip = ref.watch(tipsSearchProvider);
+                final tip = ref.watch(tipsSearchNotifierProvider);
                 return Hero(
                   tag: tip.imageUrl,
                   child: CachedNetworkImage(

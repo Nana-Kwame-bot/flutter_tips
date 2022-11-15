@@ -1,27 +1,23 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/tips/models/tip_state/tips_state.model.dart';
 import 'package:flutter_tips/tips/providers/providers.dart';
-import 'package:tips_repository/tips_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tuple/tuple.dart';
 
-final tipsProvider = StateNotifierProvider<TipsNotifier, TipsState>(
-  (ref) {
-    return TipsNotifier(tipsRepository: ref.read(tipsRepositoryProvider));
-  },
-  name: "TipsNotifier",
-);
+part 'tips_notifier.g.dart';
 
-class TipsNotifier extends StateNotifier<TipsState> {
-  TipsNotifier({required TipsRepository tipsRepository})
-      : _tipsRepository = tipsRepository,
-        super(const TipsState.initial());
-
-  final TipsRepository _tipsRepository;
+@Riverpod(keepAlive: true)
+class TipsNotifier extends _$TipsNotifier {
+  @override
+  TipsState build() {
+    return const TipsState.initial();
+  }
 
   Future<void> getData() async {
+    final tipsRepository = ref.read(tipsRepositoryProvider);
+
     state = const TipsState.loading();
 
-    final data = await AsyncValue.guard(_tipsRepository.getTips);
+    final data = await AsyncValue.guard(tipsRepository.getTips);
 
     data.when<void>(
       data: (data) {

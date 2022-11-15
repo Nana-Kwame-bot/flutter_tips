@@ -75,7 +75,7 @@ linter:
     unawaited_futures: true
     unnecessary_brace_in_string_interps: true
     unnecessary_const: true
-    unnecessary_getters_setters: true
+    unnecessary_getters_setters: false
     unnecessary_new: true
     unnecessary_null_in_if_null_operators: true
     unnecessary_this: true

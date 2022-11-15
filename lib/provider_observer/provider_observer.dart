@@ -1,5 +1,5 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tips/main.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Logger implements ProviderObserver {
   @override

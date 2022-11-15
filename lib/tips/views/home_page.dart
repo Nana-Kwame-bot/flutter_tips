@@ -1,10 +1,10 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_spinkit/flutter_spinkit.dart";
 import 'package:flutter_tips/tips/models/tip_state/tips_state.model.dart';
 import 'package:flutter_tips/tips/notifiers/tips_notifier.dart';
 import "package:flutter_tips/tips/widgets/load_sccuess.dart";
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import "package:macos_ui/macos_ui.dart";
 import "package:tips_and_tricks_api/tips_and_tricks_api.dart";
 
@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                     WidgetRef ref,
                     Widget? child,
                   ) {
-                    final tipsState = ref.watch(tipsProvider);
+                    final tipsState = ref.watch(tipsNotifierProvider);
 
                     _listen(context: context, ref: ref);
 
@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
                                 buttonSize: ButtonSize.large,
                                 onPressed: () async {
                                   await ref
-                                      .read(tipsProvider.notifier)
+                                      .read(tipsNotifierProvider.notifier)
                                       .getData();
                                 },
                                 child: const Text('Get data'),
@@ -81,7 +81,9 @@ class HomePage extends StatelessWidget {
                           child: PushButton(
                             buttonSize: ButtonSize.large,
                             onPressed: () async {
-                              await ref.read(tipsProvider.notifier).getData();
+                              await ref
+                                  .read(tipsNotifierProvider.notifier)
+                                  .getData();
                             },
                             child: const Text("Reload"),
                           ),
@@ -100,7 +102,7 @@ class HomePage extends StatelessWidget {
 
   void _listen({required WidgetRef ref, required BuildContext context}) {
     ref.listen<TipsState>(
-      tipsProvider,
+      tipsNotifierProvider,
       (_, next) {
         next.whenOrNull<void>(
           error: (object, _) {
