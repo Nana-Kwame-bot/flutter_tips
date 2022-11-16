@@ -7,30 +7,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'code_notifier.g.dart';
 
-// final codeProvider =
-//     StateNotifierProvider.autoDispose<CodeNotifier, CodeString>(
-//   (ref) {
-//     // An object from package:dio that allows cancelling http requests
-//     final cancelToken = CancelToken();
-//     // When the provider is destroyed, cancel the http request
-//     ref.onDispose(cancelToken.cancel);
-
-//     final selectedTip = ref.watch(tipsSearchProvider);
-
-//     final tipsRepository = ref.read(tipsRepositoryProvider);
-
-//     // If the request completed successfully, keep the state
-//     ref.keepAlive();
-
-//     return CodeNotifier(
-//       selectedTip: selectedTip,
-//       cancelToken: cancelToken,
-//       tipsRepository: tipsRepository,
-//     );
-//   },
-//   name: "CodeNotifier",
-// );
-
 @riverpod
 class CodeNotifier extends _$CodeNotifier {
   @override
@@ -47,6 +23,7 @@ class CodeNotifier extends _$CodeNotifier {
 
         final splitString = codeString.split("\n")
           ..removeWhere((element) => element.startsWith("//"));
+
         state = CodeString.loaded(codeString: splitString.join("\n"));
       },
       error: (error, stackTrace) {
