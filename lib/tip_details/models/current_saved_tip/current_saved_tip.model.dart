@@ -5,6 +5,8 @@ part 'current_saved_tip.model.freezed.dart';
 
 @freezed
 class CurrentSavedTip with _$CurrentSavedTip {
+  const factory CurrentSavedTip.initial() = _Initial;
+
   const factory CurrentSavedTip.loading() = _Loading;
   const factory CurrentSavedTip.loaded({
     required SavedTip savedTip,

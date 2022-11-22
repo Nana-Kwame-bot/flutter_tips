@@ -11,7 +11,7 @@ part 'saved_tip_notifier.g.dart';
 class SaveTipNotifier extends _$SaveTipNotifier {
   @override
   CurrentSavedTip build() {
-    return const CurrentSavedTip.loading();
+    return const CurrentSavedTip.initial();
   }
 
   Future<void> saveTip() async {

@@ -27,11 +27,6 @@ class _SavedTipsPageState extends ConsumerState<SavedTipsPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return CupertinoTabView(
       builder: (context) {
@@ -68,130 +63,141 @@ class _SavedTipsPageState extends ConsumerState<SavedTipsPage> {
                           ),
                         ];
                       },
-                      body: CustomScrollView(
-                        controller: _scrollController,
-                        slivers: [
-                          SliverPadding(
-                            padding: const EdgeInsets.all(16.0),
-                            sliver: SliverGrid(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 1.5,
-                                mainAxisSpacing: 30,
-                                crossAxisSpacing: 30,
-                                crossAxisCount: _getCrossAxisCount(
-                                  constraints.maxWidth ~/ 400,
-                                ),
-                              ),
-                              delegate: SliverChildBuilderDelegate(
-                                childCount: savedTips.length,
-                                (context, index) {
-                                  return SavedTipOptions(
-                                    index: index,
-                                    child: GestureDetector(
-                                      onDoubleTap: () {
-                                        ref
-                                            .read(
-                                              tipsSearchNotifierProvider
-                                                  .notifier,
-                                            )
-                                            .selectTip(
-                                              selectedTipTile:
-                                                  savedTips[index].title,
-                                            );
-                                        context.goNamed(TipDetails.name);
-                                      },
-                                      child: Stack(
-                                        clipBehavior: Clip.none,
-                                        fit: StackFit.passthrough,
-                                        alignment: Alignment.center,
-                                        children: [
-                                          DecoratedBox(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              border: Border.all(
-                                                color: MacosTheme.of(context)
-                                                    .tooltipTheme
-                                                    .textStyle!
-                                                    .color!,
-                                              ),
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              child: Hero(
-                                                tag: savedTips[index].imagePath,
-                                                child: Image.file(
-                                                  File(
-                                                    savedTips[index].imagePath,
-                                                  ),
-                                                  fit: BoxFit.fill,
-                                                  cacheWidth: constraints
-                                                      .maxWidth
-                                                      .toInt(),
-                                                  errorBuilder: (
-                                                    context,
-                                                    error,
-                                                    stackTrace,
-                                                  ) {
-                                                    return DecoratedBox(
-                                                      decoration: BoxDecoration(
-                                                        color: MacosTheme.of(
-                                                          context,
-                                                        ).canvasColor,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(16),
-                                                      ),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: const [
-                                                          Icon(
-                                                            CupertinoIcons
-                                                                .exclamationmark_circle_fill,
-                                                            color: Colors
-                                                                .redAccent,
-                                                          ),
-                                                          Text(
-                                                            "Failed to get image",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SavedTipsOptionsButton(
-                                            index: index,
-                                          ),
-                                        ],
+                      body: savedTips.isEmpty
+                          ? const SizedBox.shrink()
+                          : CustomScrollView(
+                              controller: _scrollController,
+                              slivers: [
+                                SliverPadding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  sliver: SliverGrid(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      childAspectRatio: 1.5,
+                                      mainAxisSpacing: 30,
+                                      crossAxisSpacing: 30,
+                                      crossAxisCount: _getCrossAxisCount(
+                                        constraints.maxWidth ~/ 400,
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
+                                    delegate: SliverChildBuilderDelegate(
+                                      childCount: savedTips.length,
+                                      (context, index) {
+                                        return SavedTipOptions(
+                                          index: index,
+                                          child: GestureDetector(
+                                            onDoubleTap: () {
+                                              ref
+                                                  .read(
+                                                    tipsSearchNotifierProvider
+                                                        .notifier,
+                                                  )
+                                                  .selectTip(
+                                                    selectedTipTile:
+                                                        savedTips[index].title,
+                                                  );
+                                              context.goNamed(TipDetails.name);
+                                            },
+                                            child: Stack(
+                                              clipBehavior: Clip.none,
+                                              fit: StackFit.passthrough,
+                                              alignment: Alignment.center,
+                                              children: [
+                                                DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      16,
+                                                    ),
+                                                    border: Border.all(
+                                                      color:
+                                                          MacosTheme.of(context)
+                                                              .tooltipTheme
+                                                              .textStyle!
+                                                              .color!,
+                                                    ),
+                                                  ),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      16,
+                                                    ),
+                                                    child: Hero(
+                                                      tag: savedTips[index]
+                                                          .imagePath,
+                                                      child: Image.file(
+                                                        File(
+                                                          savedTips[index]
+                                                              .imagePath,
+                                                        ),
+                                                        fit: BoxFit.fill,
+                                                        errorBuilder: (
+                                                          context,
+                                                          error,
+                                                          stackTrace,
+                                                        ) {
+                                                          return DecoratedBox(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  MacosTheme.of(
+                                                                context,
+                                                              ).canvasColor,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                16,
+                                                              ),
+                                                            ),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: const [
+                                                                Icon(
+                                                                  CupertinoIcons
+                                                                      .exclamationmark_circle_fill,
+                                                                  color: Colors
+                                                                      .redAccent,
+                                                                ),
+                                                                Text(
+                                                                  "Failed to get image",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SavedTipsOptionsButton(
+                                                  index: index,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                // LoadMore(
+                                //   onPressed: () {
+                                //     if (_scrollController.hasClients) {
+                                //       _scrollController.animateTo(
+                                //         _scrollController.position.maxScrollExtent - 80,
+                                //         duration: const Duration(milliseconds: 500),
+                                //         curve: Curves.fastOutSlowIn,
+                                //       );
+                                //     }
+                                //   },
+                                // ),
+                              ],
                             ),
-                          ),
-                          // LoadMore(
-                          //   onPressed: () {
-                          //     if (_scrollController.hasClients) {
-                          //       _scrollController.animateTo(
-                          //         _scrollController.position.maxScrollExtent - 80,
-                          //         duration: const Duration(milliseconds: 500),
-                          //         curve: Curves.fastOutSlowIn,
-                          //       );
-                          //     }
-                          //   },
-                          // ),
-                        ],
-                      ),
                     );
                   },
                 );
